@@ -1,0 +1,120 @@
+header{
+    width: 100%;
+    margin: auto;
+    height: 20%;
+    border-bottom: black 2px solid;
+
+}
+nav{
+    display: flex;
+    justify-content: space-between;
+    margin: auto;
+    margin-bottom: 15px;
+    margin-top: 15px;
+    width:100%;
+}
+ul{
+    display: flex;
+}
+li{
+    text-decoration: none;
+    list-style: none;
+    padding-left: 15px;
+}
+a{
+    color: black;
+
+}
+body{
+    margin: auto;
+    width: 1000px;
+    height: 60%;
+    border-bottom: 2px solid;
+    border-top: 2px solid;
+    margin-bottom: 15px;
+    padding-bottom: 15px;
+    
+
+}
+#formConnexion{
+    width: 100%;
+    display: flex;
+    margin: auto;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+}
+/*===========================================================================
+permet de mettre des bordure au tableau de la page "page_joueur.php"
+============================================================================*/
+#tableauJoueur{
+    width: 100%;
+    border-collapse: collapse;
+}
+th,td{
+    border: 1px solid black;
+    padding: 8px;
+    text-align: center;
+}
+th{
+    background-color: #f2f2f2;
+}
+
+#form{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+footer{
+height: 20%;
+}
+
+#equipe {
+    width: 50%; /* Ajustez cette valeur selon vos besoins */
+    margin: 0 auto; /* Centre horizontalement */
+    text-align: center; /* Centre le texte à l'intérieur */
+}
+.epais{
+    height: 0,9px;
+    background-color: rgb(128, 97, 97)
+}
+.containerRechercheJoueur{
+    margin-top: 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+section{
+    height: 60%;
+}
+
+.match {
+    border: 1px solid #ddd;
+    padding: 15px;
+    margin: 15px 0;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+}
+.sets {
+    margin-top: 10px;
+}
+.set {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin-bottom: 10px;
+    background-color: #fff;
+}
+h2 {
+    font-family: Arial, sans-serif;
+    color: #333;
+}
+h3 {
+    font-family: Arial, sans-serif;
+    color: #555;
+}
+p {
+    font-family: Arial, sans-serif;
+    color: #666;
+    margin: 5px 0;
+}
