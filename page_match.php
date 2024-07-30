@@ -1,3 +1,7 @@
+<?php
+include('page_fonctions.php');
+if (!empty($_SESSION['estConnecte']) && $_SESSION['estConnecte'] == true) :
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -110,3 +114,13 @@
 </script>
 
 </html>
+<?php
+
+else:
+    echo "<span>Il faut <a href='page_login.php'> se connecter </a> pour voir cette page</span>";
+
+
+endif;
+
+
+?>

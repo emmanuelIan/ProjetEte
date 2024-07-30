@@ -41,7 +41,7 @@ function insertion_joueur()
         );
         $id_joueur = $bdd->lastInsertId();
 
-        $req_tab_jou = $bdd->prepare("INSERT INTO joueur_post (POS_ID, JOU_ID, DATE_DEBUT) VALUES (:post, :joueur, :debut)");
+        $req_tab_jou = $bdd->prepare("INSERT INTO joueur_post (POS_ID, JOU_ID, DATE_DEBUT,IS_ACTIF) VALUES (:post, :joueur, :debut,1)");
         $req_tab_jou->execute(
             [
                 'post' => $post_Vb,
@@ -82,11 +82,8 @@ function getAllJoueur()
         JOIN 
             post ON joueur_post.POS_ID = post.POS_ID
         WHERE 
-            joueur_post.DATE_DEBUT <= :date_auj AND 
-            (joueur_post.DATE_FIN IS NULL OR joueur_post.DATE_FIN >= :date_auj)");
-        $req->execute([
-            'date_auj' => date('Y-m-d'),
-        ],);
+            joueur_post.IS_ACTIF = 1 AND joueur.est_actif");
+        $req->execute();
         return $req->fetchAll(PDO::FETCH_ASSOC);
     } catch (PDOException $e) {
         echo 'Erreur d\'insertion : ' . $e->getMessage();
@@ -102,14 +99,12 @@ function getJoueur($id)
         JOIN 
             post ON joueur_post.POS_ID = post.POS_ID
         WHERE 
-            joueur_post.DATE_DEBUT <= :date_auj AND 
-            (joueur_post.DATE_FIN IS NULL OR joueur_post.DATE_FIN >= :date_auj) AND joueur.JOU_ID = :id" );
-        $req->execute(['id' => $id,
-                        'date_auj'=> date('Y-m-d')]);
+            joueur_post.IS_ACTIF = 1  AND joueur.JOU_ID = :id");
+        $req->execute(['id' => $id]);
         return $req->fetch(PDO::FETCH_ASSOC);
     } catch (PDOException $e) {
         echo 'Erreur d\'insertion : trouver' . $e->getMessage();
-    }
+    } 
 }
 //================================ Page de Connexion ===============================================================
 
@@ -130,13 +125,12 @@ function valider_identifiants($username, $password)
         echo 'Erreur d\'insertion : ' . $e->getMessage();
     }
 }
-//================================ Effacer joueur ===============================================================
 
 function deletJoueur($idJou)
 {
     $bdd = connexion('volley_bdd');
     try {
-        $req = $bdd->prepare("DELETE FROM joueur WHERE JOU_ID = :id");
+        $req = $bdd->prepare("UPDATE joueur SET EST_ACTIF=0 WHERE JOU_ID = :id");
         $req->execute(['id' => $idJou]);
     } catch (PDOException $e) {
         echo 'Erreur d\'insertion : ' . $e->getMessage();
@@ -197,11 +191,9 @@ function getAllJoueurByEquipe($idEquipe)
         JOIN 
             post ON joueur_post.POS_ID = post.POS_ID
         WHERE 
-            joueur_post.DATE_DEBUT <= :date_auj AND 
-            (joueur_post.DATE_FIN IS NULL OR joueur_post.DATE_FIN >= :date_auj) AND JOU_EQU = :idEquipe");
+            joueur_post.IS_ACTIF = 1 AND JOU_EQU = :idEquipe AND joueur.est_actif = 1");
         $req->execute([
-            'idEquipe' => $idEquipe,
-            'date_auj' => date('Y-m-d'),
+            'idEquipe' => $idEquipe
         ]);
 
         return $req->fetchAll(PDO::FETCH_ASSOC);
@@ -319,7 +311,8 @@ function getAllSetByScoreId($ScoreId)
     }
 }
 
-function getAllPostById($id){
+function getAllPostById($id)
+{
     $bdd = connexion('volley_bdd');
     try {
         $req = $bdd->prepare("SELECT * FROM joueur_post JOIN post ON post.POS_ID = joueur_post.POS_ID WHERE JOU_ID =:id ");
@@ -330,25 +323,29 @@ function getAllPostById($id){
     }
 }
 
-function getActuelPost($id){
+function getActuelPost($id)
+{
     $bdd = connexion('volley_bdd');
     try {
         $req = $bdd->prepare("SELECT * FROM joueur_post 
         JOIN 
             post ON joueur_post.POS_ID = post.POS_ID
-        WHERE IS_ACTIF = :isActif AND JOU_ID = :id" );
-        $req->execute(['id' => $id,
-                        'isActif' => 1]);
+        WHERE IS_ACTIF = :isActif AND JOU_ID = :id");
+        $req->execute([
+            'id' => $id,
+            'isActif' => 1
+        ]);
         return $req->fetch(PDO::FETCH_ASSOC);
     } catch (PDOException $e) {
         echo 'Erreur d\'insertion : ' . $e->getMessage();
     }
 }
 
-function modifierPostJoueur($id,$idPost,$debut,$fin,$oldPost,$oldDate,$isActif){
+function modifierPostJoueur($id, $idPost, $debut, $fin, $oldPost, $oldDate, $isActif)
+{
     $bdd = connexion('volley_bdd');
     try {
-        if($isActif == "on"){
+        if ($isActif == "on") {
             $req = $bdd->prepare("UPDATE joueur_post SET IS_ACTIF = :isActif WHERE JOU_ID = :id ");
             $req->execute(
                 [
@@ -366,7 +363,7 @@ function modifierPostJoueur($id,$idPost,$debut,$fin,$oldPost,$oldDate,$isActif){
                 'fin' => $fin,
                 'oldPost' => $oldPost,
                 'oldDate' => $oldDate,
-                'isActif' => $isActif == "on" ? 1:0,
+                'isActif' => $isActif == "on" ? 1 : 0,
             ],
         );
 
@@ -377,10 +374,11 @@ function modifierPostJoueur($id,$idPost,$debut,$fin,$oldPost,$oldDate,$isActif){
     }
 }
 
-function insererPostJoueur($id,$idPost,$debut,$fin,$isActif){
+function insererPostJoueur($id, $idPost, $debut, $fin, $isActif)
+{
     $bdd = connexion('volley_bdd');
     try {
-        if($isActif == "on"){
+        if ($isActif == "on") {
             $req = $bdd->prepare("UPDATE joueur_post SET IS_ACTIF = :isActif WHERE JOU_ID = :id ");
             $req->execute(
                 [
@@ -396,7 +394,7 @@ function insererPostJoueur($id,$idPost,$debut,$fin,$isActif){
                 'idPost' => $idPost,
                 'debut' => $debut,
                 'fin' => $fin,
-                'isActif' => $isActif == "on" ? 1:0
+                'isActif' => $isActif == "on" ? 1 : 0
             ],
         );
         return $bdd->lastInsertId();

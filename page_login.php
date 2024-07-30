@@ -10,9 +10,6 @@ include('page_fonctions.php');
     <title>Connexion</title>
     <link rel="stylesheet" href="style_Css_Vb.css">
 </head>
-<header>
-
-</header>
 <?php
 $messageErreur = '';
 if (isset($_POST['btnConnexion'])) {
@@ -24,14 +21,16 @@ if (isset($_POST['btnConnexion'])) {
         header('Location: page_index_volley.php');
         echo "changegment de page effectué";
     } else {
-        $messageErreur = "Il y a une erreur dans le mot de passe ou le  nom d'utilisateur";
+        $messageErreur = "Il y a une erreur dans le mot de passe ou le nom d'utilisateur";
     }
 }
 ?>
 
 <body>
     <header>
-
+    <?php
+    include('page_nav_bar.php');
+    ?>
     </header>
     <section>
         <div id="formConnexion">

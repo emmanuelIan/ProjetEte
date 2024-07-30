@@ -1,74 +1,78 @@
 <?php
 include('page_fonctions.php');
-if (!empty($_SESSION['estConnecte']) && $_SESSION['estConnecte'] == true) :
-    if (isset($_POST['effacerJou'])) {
-        $idJouSupprimme = $_POST['id'];
-        deletJoueur($idJouSupprimme);
-    }
-    $equipe = getAllEquipe();
+
+if (isset($_POST['effacerJou'])) {
+    $idJouSupprimme = $_POST['id'];
+    deletJoueur($idJouSupprimme);
+}
+$equipe = getAllEquipe();
 ?>
-    <!DOCTYPE html>
-    <html lang="fr">
-    <?php
-    if (isset($_POST['logout'])) {
-        header('Location: page_logout.php');
-    }
-    ?>
+<!DOCTYPE html>
+<html lang="fr">
+<?php
+if (isset($_POST['logout'])) {
+    header('Location: page_logout.php');
+}
+?>
 
-    <head>
-        <meta charset="utf-8" />
-        <title><?= $_SESSION['userName'] ?></title>
-        <link rel="stylesheet" href="style_Css_Vb.css">
-    </head>
+<head>
+    <meta charset="utf-8" />
+    <title><?= $_SESSION['userName'] ?></title>
+    <link rel="stylesheet" href="style_Css_Vb.css">
+</head>
 
-    <body>
-        <header>
-            <?php
-            include('page_nav_bar.php');
+<body>
+    <header>
+        <?php
+        include('page_nav_bar.php');
+        ?>
+    </header>
+    <section>
+        <div class="containerRechercheJoueur">
+            <table>
+                <form action="page_donnee_joueur.php" method="get">
+                    <tr>
+                        <td>
+                            <label for="rechercher">Chercher un joueur </label>
+                        </td>
+                        <td>
+                            <input type="text" name="nomRechercher" required>
+                            <input type="submit" name="rechercher" value="Rechercher">
+                        </td>
+                    </tr>
+                </form>
+            </table>
+        </div>
+        <div class="container">
+            <h1>Infos des équipes:</h1>
+            <?php foreach ($equipe as $e) :
+                $lstJoueur = getAllJoueurByEquipe($e['EQU_ID']);
             ?>
-        </header>
-        <section>
-            <div class="containerRechercheJoueur">
-                <table>
-                    <form action="page_donnee_joueur.php" method="get">
+                <hr class="epais">
+                <h2><?= $e['EQU_NOM'] ?></h2>
+                <div id="<?= 'tableuJoueur' . $e['EQU_ID'] ?>">
+                    <h3><?= sizeof($lstJoueur) . " joueurs" ?></h3>
+                    <table id="tableauJoueur">
                         <tr>
-                            <td>
-                                <label for="rechercher">Chercher un joueur </label>
-                            </td>
-                            <td>
-                                <input type="text" name="nomRechercher" required>
-                                <input type="submit" name="rechercher" value="Rechercher">
-                            </td>
+                            <th>Nom</th>
+                            <th>Prenom</th>
+                            <th>Post Volley</th>
+                            <th>Nationalité </th>
+                            <th>N° du joueur</th>
+                            <?php if (!empty($_SESSION['estConnecte']) && $_SESSION['estConnecte'] == true) : ?>
+                                <th> </th>
+                                <th> </th>
+                            <?php endif; ?>
                         </tr>
-                    </form>
-                </table>
-            </div>
-            <div class="container">
-                <h1>Infos des équipes:</h1>
-                <?php foreach ($equipe as $e) :
-                    $lstJoueur = getAllJoueurByEquipe($e['EQU_ID']);
-                ?>
-                    <hr class="epais">
-                    <h2><?= $e['EQU_NOM'] ?></h2>
-                    <div id="<?= 'tableuJoueur' . $e['EQU_ID'] ?>">
-                        <h3><?=sizeof($lstJoueur)." joueurs"?></h3>
-                        <table id="tableauJoueur">
-                            <tr>
-                                <th>Nom</th>
-                                <th>Prenom</th>
-                                <th>Post Volley</th>
-                                <th>Nationalité </th>
-                                <th>N° du joueur</th>
-                                <th> </th>
-                                <th> </th>
-                            </tr>
-                            <?php foreach ($lstJoueur as $joueur) : ?>
-                                <?= "<tr><td>" . htmlspecialchars($joueur['JOU_NOM']) . "</td>" ?>
-                                <?= "<td>" . htmlspecialchars_decode($joueur['JOU_PREN']) . "</td>" ?>
-                                <?= "<td>" . htmlspecialchars($joueur['POS_NOM']) . "</td>" ?>
-                                <?= "<td>" . htmlspecialchars($joueur['JOU_NATIO']) . "</td>" ?>
-                                <?= "<td>" . htmlspecialchars($joueur['JOU_NUM']) . "</td>" ?>
-                                <!-- <td><input type="checkbox" name="deletJoueur"></td> -->
+                        <?php foreach ($lstJoueur as $joueur) : ?>
+                            <?= "<tr><td>" . htmlspecialchars($joueur['JOU_NOM']) . "</td>" ?>
+                            <?= "<td>" . htmlspecialchars_decode($joueur['JOU_PREN']) . "</td>" ?>
+                            <?= "<td>" . htmlspecialchars($joueur['POS_NOM']) . "</td>" ?>
+                            <?= "<td>" . htmlspecialchars($joueur['JOU_NATIO']) . "</td>" ?>
+                            <?= "<td>" . htmlspecialchars($joueur['JOU_NUM']) . "</td>" ?>
+                            <!-- <td><input type="checkbox" name="deletJoueur"></td> -->
+                            <?php
+                            if (!empty($_SESSION['estConnecte']) && $_SESSION['estConnecte'] == true) : ?>
                                 <td>
                                     <form action="" method="post" onsubmit="return confimerSuppression()">
                                         <input type="hidden" name="id" value="<?= $joueur['JOU_ID'] ?>">
@@ -81,35 +85,30 @@ if (!empty($_SESSION['estConnecte']) && $_SESSION['estConnecte'] == true) :
                                         <button name="modifiJou">modifier</button>
                                     </form>
                                 </td>
-                                <?= "</tr>" ?>
-                            <?php endforeach; ?>
-                        </table>
+                            <?php endif;
+                            echo "</tr>";
+                            ?>
+                        <?php endforeach; ?>
+                    </table>
+                    <br>
+                    <div>
                         <br>
-                        <div>
-                            <br>
-                            <a href="page_index_volley.php"><input type="button" name="valider" value="Retour"></a>
-                        </div>
-                    <?php endforeach; ?>
+                        <a href="page_index_volley.php"><input type="button" name="valider" value="Retour"></a>
                     </div>
-                    <script>
-                        function confimerSuppression() {
-                            return confirm("T\es sur wallah ?")
-                        }
-                    </script>
-            </div>
-        </section>
-        <footer>
+                <?php endforeach; ?>
+                </div>
+                <script>
+                    function confimerSuppression() {
+                        return confirm("T\es sur wallah ?")
+                    }
+                </script>
+        </div>
+    </section>
+    <footer>
 
-        </footer>
+    </footer>
 
 
-    </body>
+</body>
 
-    </html>
-
-<?php
-else :
-    echo $_SESSION['test'];
-endif;
-
-?>
+</html>

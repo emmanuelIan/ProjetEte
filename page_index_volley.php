@@ -94,6 +94,11 @@ if (!empty($_SESSION['estConnecte']) && $_SESSION['estConnecte'] == true) :
 
 <?php
 
+else:
+    echo "<span>Il faut <a href='page_login.php'> se connecter </a> pour voir cette page</span>";
+
+
 endif;
+
 
 ?>
