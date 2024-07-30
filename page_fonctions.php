@@ -104,7 +104,7 @@ function getJoueur($id)
         return $req->fetch(PDO::FETCH_ASSOC);
     } catch (PDOException $e) {
         echo 'Erreur d\'insertion : trouver' . $e->getMessage();
-    } 
+    }
 }
 //================================ Page de Connexion ===============================================================
 
@@ -137,15 +137,14 @@ function deletJoueur($idJou)
     }
 }
 //================================ Modifier info de joueur ===============================================================
-function updateJoueur($nom, $prenom, $postVoll, $adre, $npa, $nation, $numJou, $id, $equipe)
+function updateJoueur($nom, $prenom, $adre, $npa, $nation, $numJou, $id, $equipe)
 {
     $bdd = connexion('volley_bdd');
     try {
-        $req = $bdd->prepare("UPDATE joueur SET JOU_NOM=:nom,JOU_PREN=:pren,JOU_POST=:postVoll,JOU_ADRES=:adre,JOU_NPA=:npa,JOU_NATIO= :nation,JOU_NUM= :numJou,JOU_EQU =:equipe WHERE JOU_ID = :id");
+        $req = $bdd->prepare("UPDATE joueur SET JOU_NOM=:nom,JOU_PREN=:pren,JOU_ADRES=:adre,JOU_NPA=:npa,JOU_NATIO= :nation,JOU_NUM= :numJou,JOU_EQU =:equipe WHERE JOU_ID = :id");
         $req->execute([
             'nom' => $nom,
             'pren' => $prenom,
-            'postVoll' => $postVoll,
             'adre' => $adre,
             'npa' => $npa,
             'nation' => $nation,

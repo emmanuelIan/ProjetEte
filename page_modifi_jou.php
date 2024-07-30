@@ -33,10 +33,9 @@ if (!empty($_SESSION['estConnecte']) && $_SESSION['estConnecte'] == true) :
             $npa = $_POST['joueurNPA'];                     //insertion pour table "joueur"
             $nationnalite = $_POST['joueurNationnalite'];   //insertion pour table "joueur"
             $num_joue = $_POST['joueurNumero'];             //insertion pour table "joueur"
-            $post_Vb = $_POST['choix'];
             $equipe = $_POST['choixEquipe'];
-            updateJoueur($nom, $prenom, $post_Vb, $adresse, $npa, $nationnalite, $num_joue, $idJou, $equipe);
-            header("Location: page_joueur.php");
+            updateJoueur($nom, $prenom, $adresse, $npa, $nationnalite, $num_joue, $idJou, $equipe);
+            header('Location: page_joueur.php');
         }
         ?>
         <div id="form">
@@ -57,7 +56,7 @@ if (!empty($_SESSION['estConnecte']) && $_SESSION['estConnecte'] == true) :
                             <?php
                             $postActuel = getActuelPost($idJou);
                             echo "<label>Post Actuel: " . $postActuel['POS_NOM'] . "</label> ";
-                            echo '<a href="page_joueur_post_historique.php?id='.$idJou.'"><input type="button" value="modifier"></a>';
+                            echo '<a href="page_joueur_post_historique.php?id=' . $idJou . '"><input type="button" value="modifier"></a>';
                             ?>
                         </td>
                     </tr>
