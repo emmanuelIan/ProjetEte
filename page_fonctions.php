@@ -227,7 +227,7 @@ function insertMatch($equ1, $equ2, $mat_date, $lieu)
             ],
         );
 
-        echo "insertion avec succès";
+
         return $bdd->lastInsertId();
     } catch (PDOException $e) {
         echo 'Erreur d\'insertion : ' . $e->getMessage();
@@ -260,7 +260,6 @@ function insertSet($idScore, $numSet, $scor1, $scor2)
                 'scro2' => $scor2,
             ],
         );
-        echo "insertion avec succès";
     } catch (PDOException $e) {
         echo 'Erreur d\'insertion : ' . $e->getMessage();
     }
@@ -277,7 +276,6 @@ function insertScore($idMatch)
             ],
         );
         return $bdd->lastInsertId();
-        echo "insertion avec succès";
     } catch (PDOException $e) {
         echo 'Erreur d\'insertion : ' . $e->getMessage();
     }

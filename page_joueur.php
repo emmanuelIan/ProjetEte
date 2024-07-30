@@ -99,7 +99,7 @@ if (isset($_POST['logout'])) {
                 </div>
                 <script>
                     function confimerSuppression() {
-                        return confirm("T\es sur wallah ?")
+                        return confirm("Êtes vous sûr de vouloir supprimer ce joueur ?")
                     }
                 </script>
         </div>
